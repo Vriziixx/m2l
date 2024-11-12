@@ -1,3 +1,18 @@
+<?php
+require_once '../classes/Hotel.php';
+require_once '../classes/Organisme.php';
+require_once '../classes/Session.php';
+
+$hotel = new Hotel();
+$organisme = new Organisme();
+$session = new Session();
+
+// Récupération des données pour remplir les listes déroulantes dans le formulaire
+$hotels = $hotel->getAllHotels(); 
+$organismes = $organisme->getAllOrganismes(); 
+$sessions = $session->getAllSessions(); 
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,21 +27,6 @@
         const sessions = <?php echo json_encode($sessions); ?>;
     </script>
 </head>
-
-<?php
-require_once '../classes/Hotel.php';
-require_once '../classes/Organisme.php';
-require_once '../classes/Session.php';
-
-$hotel = new Hotel();
-$organisme = new Organisme();
-$session = new Session();
-
-// Récupération des données
-$hotels = $hotel->getAllHotels();
-$organismes = $organisme->getAllOrganismes();
-$sessions = $session->getAllSessions();
-?>
 
 <body>
     <div class="container">
@@ -50,7 +50,7 @@ $sessions = $session->getAllSessions();
                 <?php
                 require_once '../classes/Congressiste.php';
                 $congressisteModel = new Congressiste();
-                $congressistes = $congressisteModel->getAllCongressistes();
+                $congressistes = $congressisteModel->getAllCongressistes();    
 
                 foreach ($congressistes as $congressiste) {
                     // Conversion des sessions en une liste d'ID
@@ -64,7 +64,7 @@ $sessions = $session->getAllSessions();
                             <td>{$congressiste['organisme_nom']}</td>
                             <td>{$congressiste['hotel_nom']}</td>
                             <td>
-                                <button class='editBtn' onclick='openEditForm(\"{$congressiste['id']}\", \"{$congressiste['nom_congre']}\", \"{$congressiste['prenom']}\", \"{$congressiste['adresse']}\", \"{$congressiste['tel']}\", \"{$congressiste['date_inscription']}\", \"{$congressiste['num_organisme']}\", \"{$congressiste['num_hotel']}\", " . json_encode($sessions) . ")'>Modifier</button>
+                                <button class='editBtn' onclick='openEditForm(\"{$congressiste['id']}\", \"{$congressiste['nom_congre']}\", \"{$congressiste['prenom']}\", \"{$congressiste['adresse']}\", \"{$congressiste['tel']}\", \"{$congressiste['date_inscription']}\", \"{$congressiste['organisme_nom']}\", \"{$congressiste['hotel_nom']}\", " . json_encode($sessions) . ")'>Modifier</button>
                                 <button class='deleteBtn' onclick='confirmDelete(\"{$congressiste['id']}\")'>Supprimer</button>
                             </td>
                           </tr>";
@@ -90,6 +90,9 @@ $sessions = $session->getAllSessions();
 
                 <label for="tel">Téléphone :</label>
                 <input type="text" name="tel" id="tel" required>
+
+                <label for="date_inscription">Date d'Inscription :</label>
+                <input type="text" name="date_inscription" id="date_inscription" required>
 
                 <label for="num_organisme">Organisme :</label>
                 <select name="num_organisme" id="num_organisme">
